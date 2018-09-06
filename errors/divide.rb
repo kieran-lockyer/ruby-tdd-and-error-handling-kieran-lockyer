@@ -10,24 +10,41 @@ class String
     end
 end
 
+class NonNumericArgumentError < StandardError
+end
+
 def divide (dividend,divisor)
     quotient = dividend/divisor
+end
+
+def validate_number(number)
+    raise NonNumericArgumentError if !number.is_i?
+    return number
 end
 
 puts "--------------------"
 puts "--- Division App ---"
 puts "--------------------"
+
 begin
+    attempts ||= 3
     puts "Give me a number"
-    number1 = gets.chomp.to_i
+    number1 = validate_number(gets.chomp).to_i
     puts "Give me another number"
-    number2 = gets.chomp.to_i
+    number2 = validate_number(gets.chomp).to_i
     answer = divide(number1,number2)
     print "#{number1} divided by #{number2} = "
     print "#{answer || "error"}"
     puts
-rescue
-    puts "Error occured"
+rescue ZeroDivisionError
+    puts "You cannot divide by 0. Please retry with digits greater than 0." 
+    attempts -= 1
+    retry if attempts > 0
+rescue NonNumericArgumentError
+    puts "An error occurred. Did you enter integers?"
+    attempts -= 1
+    retry if attempts > 0
 end
+
 #
 # Code along challenge: if they hit an error, take them back to "give me a number"

@@ -16,4 +16,9 @@ class CustomerTest < Test::Unit::TestCase
         customer = Customer.new('John','Smith')
         assert_equal('John Smith',customer.full_name)
     end
+
+    def test_change_name
+        customer = Customer.new('John', 'Smith')
+        assert_not_equal('John Smith', customer.change_name('Mary', 'Smith'))
+    end
 end
